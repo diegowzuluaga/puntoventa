@@ -49,8 +49,11 @@ INSTALLED_APPS = [
     'markdown_deux',
     #'pagedown',
     'registration',
-
+    #'propias'
+    'productos',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -146,4 +149,4 @@ RISPY_TEMPLATE_PACK = 'bootstrap3'
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 SITE_ID= 1
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/productos'

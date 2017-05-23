@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+ <div class="container">
+ 
+ 
+  <div class="row">
+     <div class="col-sm-6 col-sm-offset-3" >
+      <h1 class="text-center"> Reporte Ventas por Items</h1>
+    <table class="table table-bordered" >
+      <thead>
+        <tr>
+          <th> Fecha </th> <th> Producto </th> <th> Cantidad </th> <th> Valor </th>
+
+        </tr>
+
+      </thead>
+      <tbody>
+
+  	{% for contact in contacts %}  {# item in reporte #}
+      <tr>
+      {% for i in contact %}
+          <td> {{i}} </td> 
+       {% endfor %}   
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+   </div>
+  </div>   
+  </div> 
+  <div class="col-sm-6 col-sm-offset-3">
+    <a class="btn btn-primary" role="button" href='{% url "imprimir_ventas" %}' ><i class="icon-print icon-white"></i> Imprimir  </a>
+  </div>
+
+  <div class="pagination ">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}">'<<'</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}">'>>'</a>
+        {% endif %}
+    </span>
+</div>
+ 
+  {% endblock %}
+
+    

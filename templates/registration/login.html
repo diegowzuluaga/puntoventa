@@ -9,7 +9,7 @@
 <form method="post" action=".">
   {% csrf_token %} 
   {{ form|crispy }}
-
+ 
   <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Iniciar sesion' %}" />
   <input type="hidden" name="next" value="{{ next }}" />
 
