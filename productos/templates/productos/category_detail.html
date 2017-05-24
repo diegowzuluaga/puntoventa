@@ -5,7 +5,7 @@
   <div class="row">
     {% for product in products %}
       <div class="col-xs-4">
-         {% include "productos/producto_thumbnail.html" with product=product %}
+         {% include "productos/producto_thumbnail.html" with producto=product %}
       </div>  
       {% cycle '' ''  '</div><div class="row">' %}
     {% endfor %}

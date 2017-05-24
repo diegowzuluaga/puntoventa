@@ -3,11 +3,11 @@
 {% block content %}
   <h3>{{object }} </h3>
   <div class="row">
-    {% for product in products %}
+    {% for product in productos %}
       <div class="col-xs-4">
-         {% include "products/product_thumbnail.html" with product=product %}
+         {% include "productos/producto_thumbnail.html" with producto=product %}
       </div>  
-      {% cycle '' ''  '</div><div class="row">' %}
+      {% cycle '' '' '</div><div class="row">' %}
     {% endfor %}
   </div>    
 {% endblock %}

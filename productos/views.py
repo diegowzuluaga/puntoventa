@@ -15,6 +15,7 @@ import random
 class CategoryListView(ListView):
 	model = Categoria
 	queryset = Categoria.objects.all()
+	#print(queryset)
 	template_name = "productos/producto_list.html"
 
 class CategoryDetailView(DetailView):
@@ -23,12 +24,13 @@ class CategoryDetailView(DetailView):
 	def get_context_data(self, *args, **kwargs):
 		context = super(CategoryDetailView, self).get_context_data(*args, **kwargs)
 		obj = self.get_object()
-		#print(obj)
+		print(obj)
 		producto_set = obj.producto_set.all()
-		#print(product_set)
+		#print(producto_set)
 		default_productos = obj.default_categoria.all()
 		#print(default_products)
 		productos = (producto_set | default_productos).distinct()
+		#print(productos)
 		context['productos'] = productos
 		return context 
 
@@ -115,10 +117,11 @@ class ProductDetailView(DetailView):
 	def get_context_data(self, *args, **kwargs):
 		context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
 		instance = self.get_object()
+		#print(instance)
 		#order_by("-title")
 		#context["related"] = sorted (Product.objects.get_related(instance)[:6], key = lambda x: x.title, reverse=True)
 		context["related"] = sorted (Producto.objects.get_related(instance)[:6], key = lambda x: random.random())
-		print(context["related"])
+		#print(context["related"])
 		return context
 
 def product_detail(request, id):

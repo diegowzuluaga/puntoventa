@@ -36,7 +36,7 @@ class Producto(models.Model):
 	objects = ProductoManager()
 
 	class Meta:
-		ordering = ['-nombre']
+		ordering = ['nombre']
 
 
 	def get_absolute_url(self):
