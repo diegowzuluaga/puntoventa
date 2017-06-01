@@ -14,3 +14,15 @@ from .models import *
 # 			"activo",
 # 		)
 # VariationInventoryFormSet = modelformset_factory(Variation, form = VariationInventoryForm, extra = 0)
+class CrearProductoForm(forms.ModelForm):
+	#contenido = forms.CharField(widget=PagedownWidget(show_preview=False))
+	#ingrediente = forms.DateField(widget = forms.SelectDateWidget)
+	class Meta:
+		model = ProductoIngrediente
+		fields = [
+			"producto",
+			"ingrediente",
+			"cantidad",
+			"unidad",
+			]
+#CrearProductoFormSet = modelformset_factory(ProductoIngrediente, form = CrearProductoForm, extra = 0)		

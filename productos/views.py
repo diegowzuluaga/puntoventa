@@ -6,8 +6,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.utils import timezone
 
-#from .forms import  VariationInventoryFormSet
-from .models import Producto, Categoria
+from .forms import  CrearProductoForm
+from .models import Producto, Categoria, ProductoIngrediente
 #from .mixins import StaffRequiredMixin, LoginRequiredMixin
 # Create your views here.
 import random
@@ -37,44 +37,6 @@ class CategoryDetailView(DetailView):
 
 
 
-# class VariationListView(StaffRequiredMixin,ListView):
-# 	model = Variation
-# 	queryset = Variation.objects.all()
-# 	#print(queryset)
-# 	#queryset = Product.objects.all().active()
-# 	#queryset = Product.objects.filter(activo=False)
-
-# 	def get_context_data(self, *args, **kwargs):
-# 		context = super(VariationListView, self).get_context_data(*args, **kwargs)
-# 		context['formset'] = VariationInventoryFormSet(queryset=self.get_queryset())
-# 		return context
-
-# 	def get_queryset(self, *args, **kwargs):
-# 		product_pk = self.kwargs.get("pk")
-# 		#print(product_pk)
-# 		if product_pk:
-# 			product = get_object_or_404(Product, pk=product_pk)
-# 			queryset = Variation.objects.filter(product = product)
-# 		return queryset
-
-# 	def post(self, request, *args, **kwargs):
-# 		formset = VariationInventoryFormSet(request.POST, request.FILES)
-# 		if formset.is_valid():
-# 			formset.save(commit=False)
-# 			for form in formset:
-# 				new_item = form.save(commit = False)
-# 				if new_item.title:
-# 					product_pk = self.kwargs.get("pk")
-# 					product = get_object_or_404(Product, pk=product_pk)
-# 					new_item.product = product
-# 					new_item.save()
-
-				
-			
-# 			messages.success(request,"Su Inventario y Precios han sido actualizados")
-# 			return redirect("products")
-
-# 		raise Http404
 
 
 
@@ -133,12 +95,31 @@ def product_detail(request, id):
 	except:
 		raise Http404
 
-	template = "producto/product_detail.html"
+	template = "productos/product_detail.html"
 	context = {
 	    "object": producto_instance,
 	}
 
 	return render(request, template, context)
+
+def crear_producto(request):
+	#if not request.user.is_authenticated():
+	#			raise Http404
+	#print (request.user)
+	form = CrearProductoForm(request.POST or None)
+	print (request.POST)
+	if form.is_valid(): #and request.user.is_authenticated():
+		instance = form.save(commit=False)
+		#print(instance)
+		#instance.user = request.user 
+		instance.save()
+		messages.success(request, "Tu producto ha sido creado correctamente.")
+		#return HttpResponseRedirect(reverse(productos))
+		return render(request,"productos/producto_list.html",{})
+	context = {
+		"form": form
+	}
+	return render(request, "productos/crear_producto.html", context)
 
 def imprimir(request):
 	template = "imprimir.html"

@@ -31,6 +31,8 @@ class Producto(models.Model):
 	activo = models.BooleanField(default = True) 
 	categorias = models.ManyToManyField('Categoria', blank=True)
 	inventario = models.IntegerField(null=True, blank = True)
+	stock_minimo = models.IntegerField(blank = False)
+	elaborado = models.BooleanField(default = False)
 	default = models.ForeignKey('Categoria', related_name = 'default_categoria', null=True, blank=True)
 
 	objects = ProductoManager()
@@ -51,6 +53,28 @@ class Producto(models.Model):
 
 	def __str__(self):
 		return self.nombre
+
+	def get_price(self):
+ 		if self.precio_promocion is not None:
+ 			return self.precio_promocion
+ 		else:
+ 			return self.precio
+
+	def get_html_price(self):
+ 		if self.precio_promocion is not None:
+ 			html_text = "<span class='sale-price'>%s</span><span class='og-price'>%s</span>"%(self.precio_promocion, self.precio)
+ 		else:
+ 			html_text = "<span class='price'>%s</span>"%(self.precio)
+ 		return mark_safe(html_text)
+
+	def add_to_cart(self):
+		return "%s?item=%s&qty=1" %(reverse("cart"), self.id)
+
+	def remove_from_cart(self):
+ 		return "%s?item=%s&qty=1&delete=True" %(reverse("cart"), self.id)
+
+	def get_title(self):
+ 		return "%s " %(self.nombre)
 
 	# producto imagen
 	# producto categoria	
@@ -108,6 +132,27 @@ class Producto(models.Model):
 
 # post_save.connect(product_post_save_receiver, sender = Product)
 
+class Unidad(models.Model):
+	nombre = models.CharField(max_length = 120)
+	abreviatura = models.CharField(max_length = 120)
+
+	def __str__(self):
+		return self.nombre
+
+
+
+class Ingrediente(models.Model):
+	nombre = models.CharField(max_length = 120, blank=False, null=False, unique=True)
+	categoria = models.ForeignKey('Categoria', blank=False)
+	unidad = models.ForeignKey(Unidad)
+	inventario = models.IntegerField(null=True, blank = True)
+	stock_minimo = models.IntegerField(blank = False)
+
+	def __str__(self):
+		return self.nombre
+	
+
+
 def image_upload_to(instance, filename):
 	nombre = instance.producto.nombre
 	slug = slugify(title)
@@ -155,6 +200,18 @@ class ProductoCategoria(models.Model):
 
 	def __str__(self):
 		return self.Producto.nombre
+
+class ProductoIngrediente(models.Model):
+	producto = models.ForeignKey(Producto)
+	ingrediente = models.ForeignKey(Ingrediente)
+	cantidad = models.FloatField(blank = False)
+	unidad = models.ForeignKey(Unidad)
+
+	def __str__(self):
+		return self.producto.nombre
+
+	def get_absolute_url(self):
+		return reverse("crear_producto")
 
 
 # class ProductFeatured(models.Model):

@@ -3,7 +3,7 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from .views import ProductDetailView, ProductListView, imprimir #VariationListView
+from .views import ProductDetailView, ProductListView, imprimir, crear_producto #VariationListView
 
 urlpatterns = [
     # Examples:
@@ -14,5 +14,6 @@ urlpatterns = [
     #url(r'^(?P<pk>\d+)/inventory/$', VariationListView.as_view(), name='product_inventory'),
     #url(r'^(?P<id>\d+)', 'products.views.product_detail', name='producto_detalle_view'),
     url(r'^imprimir/$', imprimir, name='imprimir'),
+    url(r'^crear/$', crear_producto, name='crear_producto'),
  ]
 
